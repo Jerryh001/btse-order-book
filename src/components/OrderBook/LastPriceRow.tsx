@@ -1,5 +1,12 @@
 import { useEffect, useMemo, useRef } from "react";
-import { styled, TableCell, TableRow, TableRowProps } from "@mui/material";
+import {
+  alpha,
+  styled,
+  TableCell,
+  TableRow,
+  TableRowProps,
+  Typography,
+} from "@mui/material";
 import { tradeApi } from "@/redux/api/trade";
 
 export const LastPriceRow: React.FC = () => {
@@ -23,10 +30,12 @@ export const LastPriceRow: React.FC = () => {
   }, [lastPrice]);
 
   return (
-    <PriceTableRow color={color}>
-      <PriceTableCell colSpan={3} align="center">
-        {lastPrice?.price}
-      </PriceTableCell>
+    <PriceTableRow variant={color}>
+      <TableCell colSpan={3} align="center">
+        <Typography color={color} fontWeight={700}>
+          {lastPrice?.price}
+        </Typography>
+      </TableCell>
     </PriceTableRow>
   );
 };
@@ -39,33 +48,32 @@ function getColor(previousPrice?: number, currentPrice?: number) {
   ) {
     return;
   }
-  return currentPrice > previousPrice ? "green" : "red";
+  return currentPrice > previousPrice ? "success" : "error";
 }
 
 interface PriceTableRowProps extends TableRowProps {
-  color?: "green" | "red";
+  variant?: "success" | "error";
 }
 
 const PriceTableRow = styled(TableRow, {
   name: "PriceTableRow",
-  shouldForwardProp: (propName) => propName !== "color",
-})<PriceTableRowProps>({
-  color: "#F0F4F8",
-  backgroundColor: "rgba(134, 152, 170, 0.12)",
+  shouldForwardProp: (propName) => propName !== "variant",
+})<PriceTableRowProps>(({ theme }) => ({
+  backgroundColor: alpha(theme.palette.text.secondary, 0.12),
   variants: [
     {
-      props: { color: "green" },
-      style: { color: "#00b15d", backgroundColor: "rgba(16, 186, 104, 0.12)" },
+      props: { variant: "success" },
+      style: {
+        // rgba(16, 186, 104, 0.12)
+        backgroundColor: alpha("#10BA68", 0.12),
+      },
     },
     {
-      props: { color: "red" },
-      style: { color: "#FF5B5A", backgroundColor: "rgba(255, 90, 90, 0.12) " },
+      props: { variant: "error" },
+      style: {
+        //rgba(255, 90, 90, 0.12)
+        backgroundColor: alpha("#FF5A5A", 0.12),
+      },
     },
   ],
-});
-
-const PriceTableCell = styled(TableCell, {
-  name: "PriceTableCell",
-})({
-  color: "inherit",
-});
+}));

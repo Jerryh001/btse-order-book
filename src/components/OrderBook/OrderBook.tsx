@@ -1,4 +1,5 @@
 import {
+  styled,
   Table,
   TableBody,
   TableCell,
@@ -13,12 +14,12 @@ import { BuyRows } from "./BuyRows";
 export const OrderBook: React.FC = () => {
   return (
     <TableContainer>
-      <Table>
+      <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>{"Price (USD)"}</TableCell>
-            <TableCell>{"Size"}</TableCell>
-            <TableCell>{"Total"}</TableCell>
+            <HeaderTableCell>{"Price (USD)"}</HeaderTableCell>
+            <HeaderTableCell>{"Size"}</HeaderTableCell>
+            <HeaderTableCell>{"Total"}</HeaderTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -30,3 +31,9 @@ export const OrderBook: React.FC = () => {
     </TableContainer>
   );
 };
+
+const HeaderTableCell = styled(TableCell, {
+  name: "HeaderTableCell",
+})(({ theme }) => ({
+  color: theme.palette.text.secondary,
+}));
