@@ -14,12 +14,12 @@ import { BuyRows } from "./BuyRows";
 export const OrderBook: React.FC = () => {
   return (
     <TableContainer>
-      <Table size="small">
+      <Table size="small" padding="none">
         <TableHead>
           <TableRow>
             <HeaderTableCell>{"Price (USD)"}</HeaderTableCell>
-            <HeaderTableCell>{"Size"}</HeaderTableCell>
-            <HeaderTableCell>{"Total"}</HeaderTableCell>
+            <HeaderTableCell align="right">{"Size"}</HeaderTableCell>
+            <HeaderTableCell align="right">{"Total"}</HeaderTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
