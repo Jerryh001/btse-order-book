@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef } from "react";
 import {
   alpha,
+  Stack,
   styled,
   TableCell,
   TableRow,
@@ -8,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import { tradeApi } from "@/redux/api/trade";
+import { ArrowDownIcon } from "../icons/ArrowDownIcon";
 
 export const LastPriceRow: React.FC = () => {
   const { data: lastPrice } = tradeApi.useListTradeFillsQuery(undefined, {
@@ -32,9 +34,17 @@ export const LastPriceRow: React.FC = () => {
   return (
     <PriceTableRow variant={color}>
       <TableCell colSpan={3} align="center">
-        <Typography color={color} fontWeight={700}>
-          {lastPrice?.price}
-        </Typography>
+        <Stack
+          direction="row"
+          spacing={1}
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Typography color={color} fontWeight={700}>
+            {lastPrice?.price}
+          </Typography>
+          {color ? <PriceArrowIcon color={color} fontSize="small" /> : null}
+        </Stack>
       </TableCell>
     </PriceTableRow>
   );
@@ -77,3 +87,14 @@ const PriceTableRow = styled(TableRow, {
     },
   ],
 }));
+
+const PriceArrowIcon = styled(ArrowDownIcon, {
+  name: "PriceArrowIcon",
+})({
+  variants: [
+    {
+      props: { color: "success" },
+      style: { transform: "rotate(180deg)" },
+    },
+  ],
+});
