@@ -10,25 +10,28 @@ import {
 import { LastPriceRow } from "./LastPriceRow";
 import { SellRows } from "./SellRows";
 import { BuyRows } from "./BuyRows";
+import { TotalContextProvider } from "./TotalContext";
 
 export const OrderBook: React.FC = () => {
   return (
-    <TableContainer>
-      <Table size="small" padding="none">
-        <TableHead>
-          <TableRow>
-            <HeaderTableCell>{"Price (USD)"}</HeaderTableCell>
-            <HeaderTableCell align="right">{"Size"}</HeaderTableCell>
-            <HeaderTableCell align="right">{"Total"}</HeaderTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <SellRows />
-          <LastPriceRow />
-          <BuyRows />
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <TotalContextProvider>
+      <TableContainer>
+        <Table size="small" padding="none">
+          <TableHead>
+            <TableRow>
+              <HeaderTableCell>{"Price (USD)"}</HeaderTableCell>
+              <HeaderTableCell align="right">{"Size"}</HeaderTableCell>
+              <HeaderTableCell align="right">{"Total"}</HeaderTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            <SellRows />
+            <LastPriceRow />
+            <BuyRows />
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </TotalContextProvider>
   );
 };
 
