@@ -29,7 +29,9 @@ export const orderBookApi = api.injectEndpoints({
 });
 
 function websocketWithRetry() {
-  const ws = new WebSocket("wss://ws.btse.com/ws/oss/futures");
+  const ws = new WebSocket(
+    `wss://${import.meta.env.VITE_WS_SERVER_HOST}/ws/oss/futures`
+  );
   function subscribe() {
     ws.send(
       JSON.stringify({

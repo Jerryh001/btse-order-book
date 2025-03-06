@@ -10,7 +10,9 @@ export const tradeApi = api.injectEndpoints({
       // use empty data as initial value, fill it later
       queryFn: () => ({ data: undefined }),
       onCacheEntryAdded(_arg, { cacheEntryRemoved, updateCachedData }) {
-        const ws = new WebSocket("wss://ws.btse.com/ws/futures");
+        const ws = new WebSocket(
+          `wss://${import.meta.env.VITE_WS_SERVER_HOST}/ws/futures`
+        );
         cacheEntryRemoved.then(() => ws.close());
         ws.addEventListener("message", (event) => {
           const data = JSON.parse(
