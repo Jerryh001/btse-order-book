@@ -41,7 +41,7 @@ export const LastPriceRow: React.FC = () => {
           justifyContent="center"
         >
           <Typography color={color} fontWeight={700}>
-            {lastPrice?.price}
+            {lastPrice?.price.toLocaleString("en-US")}
           </Typography>
           {color ? <PriceArrowIcon color={color} fontSize="small" /> : null}
         </Stack>

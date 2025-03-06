@@ -28,17 +28,17 @@ export const QuoteRow: React.FC<QuoteRowProps> = ({
     <QuoteTableRow key={row[0]} color={color} hover>
       <TableCell>
         <Typography color={color} variant="body2" fontWeight={500}>
-          {row[0]}
+          {(+row[0]).toLocaleString("en-US")}
         </Typography>
       </TableCell>
       <QuoteSizeTableCell highLightColor={highLightColor} align="right">
         <Typography variant="body2" fontWeight={500}>
-          {row[1]}
+          {(+row[1]).toLocaleString("en-US")}
         </Typography>
       </QuoteSizeTableCell>
       <TableCell align="right">
         <Typography variant="body2" fontWeight={500}>
-          {total}
+          {total.toLocaleString("en-US")}
         </Typography>
       </TableCell>
     </QuoteTableRow>
