@@ -3,6 +3,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  tableCellClasses,
   TableContainer,
   TableHead,
   TableRow,
@@ -16,7 +17,7 @@ export const OrderBook: React.FC = () => {
   return (
     <TotalContextProvider>
       <TableContainer>
-        <Table size="small" padding="none">
+        <OrderBookTable size="small" padding="none">
           <TableHead>
             <TableRow>
               <HeaderTableCell>{"Price (USD)"}</HeaderTableCell>
@@ -29,7 +30,7 @@ export const OrderBook: React.FC = () => {
             <LastPriceRow />
             <BuyRows />
           </TableBody>
-        </Table>
+        </OrderBookTable>
       </TableContainer>
     </TotalContextProvider>
   );
@@ -40,3 +41,11 @@ const HeaderTableCell = styled(TableCell, {
 })(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
+
+const OrderBookTable = styled(Table, {
+  name: "OrderBookTable",
+})({
+  [`& .${tableCellClasses.root}`]: {
+    borderBottom: "unset",
+  },
+});
