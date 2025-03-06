@@ -1,6 +1,7 @@
 import { API } from "@/types/api";
 import { Resource } from "@/types/resource";
 import { api } from "./baseApi";
+import { patchOrderBookData } from "./util";
 
 export const orderBookApi = api.injectEndpoints({
   endpoints: (build) => ({
@@ -16,23 +17,11 @@ export const orderBookApi = api.injectEndpoints({
           ) as API.Websocket.EventOf<API.Websocket.Topic.ORDER_BOOK>;
           if (data.topic !== API.Websocket.Topic.ORDER_BOOK) return;
 
-          updateCachedData((draft) => {
-            switch (data.data.type) {
-              case Resource.OrderBook.Type.SNAPSHOT:
-                return data.data;
-              case Resource.OrderBook.Type.DELTA:
-                if (!draft) return;
-                if (draft.seqNum !== data.data.prevSeqNum) {
-                  reconnect();
-                  return;
-                }
-                // Workaround
-                draft.seqNum = data.data.seqNum;
-                draft.prevSeqNum = data.data.prevSeqNum;
-                // TODO: apply delta
-                return;
-            }
+          const abortController = new AbortController();
+          abortController.signal.addEventListener("abort", () => {
+            reconnect();
           });
+          updateCachedData(patchOrderBookData(data.data, abortController));
         });
       },
     }),
