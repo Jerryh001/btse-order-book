@@ -1,3 +1,4 @@
+import { backOff } from "exponential-backoff";
 import { API } from "@/types/api";
 import { Resource } from "@/types/resource";
 import { api } from "./baseApi";
@@ -9,26 +10,40 @@ export const orderBookApi = api.injectEndpoints({
       // use empty data as initial value, fill it later
       queryFn: () => ({ data: undefined }),
       onCacheEntryAdded(_arg, { cacheEntryRemoved, updateCachedData }) {
-        const { ws, reconnect } = websocketWithRetry();
-        cacheEntryRemoved.then(() => ws.close());
-        ws.addEventListener("message", (event) => {
-          const data = JSON.parse(
-            event.data
-          ) as API.Websocket.EventOf<API.Websocket.Topic.ORDER_BOOK>;
-          if (data.topic !== API.Websocket.Topic.ORDER_BOOK) return;
+        backOff(
+          () =>
+            new Promise<void>((resolve, reject) => {
+              const { ws, reconnect } = websocketWithResubscribe();
+              ws.addEventListener("error", () => {
+                ws.close();
+                reject();
+              });
+              cacheEntryRemoved.then(() => {
+                ws.close();
+                resolve();
+              });
+              ws.addEventListener("message", (event) => {
+                const data = JSON.parse(
+                  event.data
+                ) as API.Websocket.EventOf<API.Websocket.Topic.ORDER_BOOK>;
+                if (data.topic !== API.Websocket.Topic.ORDER_BOOK) return;
 
-          const abortController = new AbortController();
-          abortController.signal.addEventListener("abort", () => {
-            reconnect();
-          });
-          updateCachedData(patchOrderBookData(data.data, abortController));
-        });
+                const abortController = new AbortController();
+                abortController.signal.addEventListener("abort", () => {
+                  reconnect();
+                });
+                updateCachedData(
+                  patchOrderBookData(data.data, abortController)
+                );
+              });
+            })
+        );
       },
     }),
   }),
 });
 
-function websocketWithRetry() {
+function websocketWithResubscribe() {
   const ws = new WebSocket(
     `wss://${import.meta.env.VITE_WS_SERVER_HOST}/ws/oss/futures`
   );

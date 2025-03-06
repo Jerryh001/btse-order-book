@@ -1622,6 +1622,7 @@ __metadata:
     eslint: "npm:^9.21.0"
     eslint-plugin-react-hooks: "npm:^5.2.0"
     eslint-plugin-react-refresh: "npm:^0.4.19"
+    exponential-backoff: "npm:^3.1.2"
     globals: "npm:^16.0.0"
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
@@ -2130,7 +2131,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"exponential-backoff@npm:^3.1.1":
+"exponential-backoff@npm:^3.1.1, exponential-backoff@npm:^3.1.2":
   version: 3.1.2
   resolution: "exponential-backoff@npm:3.1.2"
   checksum: 10c0/d9d3e1eafa21b78464297df91f1776f7fbaa3d5e3f7f0995648ca5b89c069d17055033817348d9f4a43d1c20b0eab84f75af6991751e839df53e4dfd6f22e844
