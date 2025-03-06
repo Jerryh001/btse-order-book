@@ -1,7 +1,9 @@
 import { useMemo, useRef } from "react";
-import { alpha, styled, TableCell, TableRow, Typography } from "@mui/material";
+import { TableCell, Typography } from "@mui/material";
 import { Resource } from "@/types/resource";
-import { useTotalContext } from "./TotalContext";
+import { useTotalContext } from "../TotalContext";
+import { QuoteSizeTableCell } from "./QuoteSizeTableCell";
+import { QuoteTableRow } from "./QuoteTableRow";
 
 export interface QuoteRowProps {
   row: Resource.OrderBook.Quote;
@@ -62,74 +64,6 @@ export const QuoteRow: React.FC<QuoteRowProps> = ({
     </QuoteTableRow>
   );
 };
-
-interface QuoteTableRowProps {
-  color?: "success" | "error";
-}
-
-const QuoteTableRow = styled(TableRow, {
-  name: "QuoteTableRow",
-  shouldForwardProp: (prop) => prop !== "color",
-})<QuoteTableRowProps>(({ theme }) => ({
-  "@keyframes mount-success": {
-    from: {
-      // rgba(0, 177, 93, 0.5)
-      backgroundColor: alpha(theme.palette.success.main, 0.5),
-    },
-  },
-  "@keyframes mount-error": {
-    from: {
-      // rgba(255, 91, 90, 0.5)
-      backgroundColor: alpha(theme.palette.error.main, 0.5),
-    },
-  },
-  animationDuration: `${theme.transitions.duration.shortest}ms`,
-  animationTimingFunction: theme.transitions.easing.easeIn,
-  variants: [
-    {
-      props: { color: "success" },
-      style: { animationName: "mount-success" },
-    },
-    {
-      props: { color: "error" },
-      style: { animationName: "mount-error" },
-    },
-  ],
-}));
-
-interface QuoteSizeTableCellProps {
-  highLightColor?: "success" | "error";
-}
-
-const QuoteSizeTableCell = styled(TableCell, {
-  name: "QuoteSizeTableCell",
-  shouldForwardProp: (prop) => prop !== "highLightColor",
-})<QuoteSizeTableCellProps>(({ theme }) => ({
-  "@keyframes highlight-success": {
-    from: {
-      // rgba(0, 177, 93, 0.5)
-      backgroundColor: alpha(theme.palette.success.main, 0.5),
-    },
-  },
-  "@keyframes highlight-error": {
-    from: {
-      // rgba(255, 91, 90, 0.5)
-      backgroundColor: alpha(theme.palette.error.main, 0.5),
-    },
-  },
-  animationDuration: `${theme.transitions.duration.shortest}ms`,
-  animationTimingFunction: theme.transitions.easing.easeIn,
-  variants: [
-    {
-      props: { highLightColor: "success" },
-      style: { animationName: "highlight-success" },
-    },
-    {
-      props: { highLightColor: "error" },
-      style: { animationName: "highlight-error" },
-    },
-  ],
-}));
 
 function getHighLightColor(newSize: string, oldSize: string) {
   const newSizeNum = +newSize;
